@@ -1,0 +1,20 @@
+# --------------------
+# Backend
+# --------------------
+backend/node_modules/
+backend/.env
+backend/src/database/database.sqlite
+backend/*.log
+
+# --------------------
+# Frontend
+# --------------------
+frontend/node_modules/
+frontend/build/
+
+# --------------------
+# Allgemein
+# --------------------
+.DS_Store
+Thumbs.db
+.vscode/
