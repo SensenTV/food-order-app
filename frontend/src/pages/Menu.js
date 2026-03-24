@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart, updateQuantity, clearCart } from '../redux/slices/cartSlice';
 import { getMenuByRestaurant, getRestaurantById, createOrder } from '../api/api';
 import '../styles/main.css';
 
 export default function Menu() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const cartItems = useSelector((state) => state.cart.items);
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [orderLoading, setOrderLoading] = useState(false);
@@ -33,42 +39,21 @@ export default function Menu() {
     fetchData();
   }, [id]);
 
-  const addToCart = (item) => {
-    const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
-    
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
-    }
+  const handleAddToCart = (item) => {
+    dispatch(addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      restaurantId: id,
+    }));
   };
 
-  const removeFromCart = (itemId) => {
-    setCartItems(cartItems.filter((item) => item.id !== itemId));
+  const handleRemoveFromCart = (itemId) => {
+    dispatch(removeFromCart(itemId));
   };
 
-  const updateQuantity = (itemId, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(itemId);
-    } else {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === itemId ? { ...item, quantity } : item
-        )
-      );
-    }
-  };
-
-  const calculateTotal = () => {
-    return cartItems
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2);
+  const handleUpdateQuantity = (itemId, quantity) => {
+    dispatch(updateQuantity({ itemId, quantity }));
   };
 
   const handlePlaceOrder = async () => {
@@ -88,7 +73,7 @@ export default function Menu() {
 
       await createOrder(token, id, items);
       alert('Order placed successfully!');
-      setCartItems([]);
+      dispatch(clearCart());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -123,7 +108,7 @@ export default function Menu() {
                     <p>{item.description}</p>
                     <p className="price">${item.price.toFixed(2)}</p>
                   </div>
-                  <button onClick={() => addToCart(item)} className="add-btn">
+                  <button onClick={() => handleAddToCart(item)} className="add-btn">
                     Add to Cart
                   </button>
                 </div>
@@ -146,17 +131,17 @@ export default function Menu() {
                       <p className="price">${item.price.toFixed(2)}</p>
                     </div>
                     <div className="quantity-controls">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
+                      <button onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}>
                         −
                       </button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                      <button onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}>
                         +
                       </button>
                     </div>
                     <p className="total">${(item.price * item.quantity).toFixed(2)}</p>
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => handleRemoveFromCart(item.id)}
                       className="remove-btn"
                     >
                       Remove
@@ -167,7 +152,7 @@ export default function Menu() {
 
               <div className="cart-summary">
                 <p className="total-price">
-                  Total: <strong>${calculateTotal()}</strong>
+                  Total: <strong>${totalPrice.toFixed(2)}</strong>
                 </p>
                 {!token ? (
                   <p className="login-prompt">Please <Link to="/login">login</Link> to place an order</p>

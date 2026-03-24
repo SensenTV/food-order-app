@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getRestaurants } from '../api/api';
+import CartBadge from '../components/CartBadge';
 import '../styles/main.css';
 
 export default function Restaurants() {
@@ -35,18 +36,21 @@ export default function Restaurants() {
     <div className="page">
       <div className="header">
         <h1>Food Order App</h1>
-        {user && (
-          <div className="user-info">
-            <span>Welcome, {user.name}!</span>
-            <button onClick={handleLogout} className="logout-btn">Logout</button>
-          </div>
-        )}
-        {!user && (
-          <div className="auth-links">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </div>
-        )}
+        <div className="header-right">
+          <CartBadge />
+          {user && (
+            <div className="user-info">
+              <span>Welcome, {user.name}!</span>
+              <button onClick={handleLogout} className="logout-btn">Logout</button>
+            </div>
+          )}
+          {!user && (
+            <div className="auth-links">
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="restaurants-container">
