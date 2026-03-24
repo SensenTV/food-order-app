@@ -1,14 +1,14 @@
 # food-order-app
 
-Vollstaendige Bestellanwendung fuer Restaurants mit Frontend (React/Vite) und Backend (Node.js/Express).
+Vollständige Bestellanwendung für Restaurants mit Frontend (React/Vite) und Backend (Node.js/Express).
 
 ## Inhaltsverzeichnis
 
-- [Ueberblick](#ueberblick)
+- [Überblick](#überblick)
 - [Voraussetzungen](#voraussetzungen)
 - [Installation](#installation)
 - [Schnellstart](#schnellstart)
-- [Manueller Start](#manueller-start)
+- [Manüller Start](#manüller-start)
 - [Environment-Variablen](#environment-variablen)
 - [Fehlerbehebung](#fehlerbehebung)
 - [Technische Dokumentation](#technische-dokumentation)
@@ -22,7 +22,7 @@ Vollstaendige Bestellanwendung fuer Restaurants mit Frontend (React/Vite) und Ba
 - [Build und Produktion](#build-und-produktion)
 - [Weitere Ressourcen](#weitere-ressourcen)
 
-## Ueberblick
+## Überblick
 
 Die Anwendung besteht aus:
 
@@ -35,8 +35,8 @@ Die Anwendung besteht aus:
 
 Bitte vor dem Start installieren:
 
-- **Node.js** (empfohlen: LTS, z. B. 20.x oder neuer) - [Download](https://nodejs.org/)
-- **PowerShell 5.1+** (Windows, fuer `start.ps1`)
+- **Node.js** (empfohlen: LTS, z. B. 20.x oder neür) - [Download](https://nodejs.org/)
+- **PowerShell 5.1+** (Windows, für `start.ps1`)
 
 ## Installation
 
@@ -47,7 +47,7 @@ git clone <https://github.com/SensenTV/food-order-app.git>
 cd food-order-app
 ```
 
-Abhaengigkeiten installieren:
+Abhängigkeiten installieren:
 
 ```bash
 # Backend
@@ -58,13 +58,13 @@ npm install
 cd ../frontend
 npm install
 
-# Zurueck zur Root
+# Zurück zur Root
 cd ..
 ```
 
 ## Schnellstart
 
-Empfohlener Start ueber das Skript:
+Empfohlener Start über das Skript:
 
 ```powershell
 .\start.ps1
@@ -75,15 +75,15 @@ Das Skript:
 - beendet alte Node.js-Prozesse
 - startet das Backend auf Port `5000`
 - startet das Frontend auf Port `5173`
-- ueberwacht beide Prozesse
+- überwacht beide Prozesse
 
-Danach im Browser oeffnen:
+Danach im Browser öffnen:
 
 ```text
 http://localhost:5173
 ```
 
-## Manueller Start
+## Manüller Start
 
 Backend (Terminal 1):
 
@@ -115,12 +115,12 @@ FRONTEND_URL=http://localhost:5173
 
 ## Fehlerbehebung
 
-| Problem | Loesung |
+| Problem | Lösung |
 | --- | --- |
 | Port bereits belegt | Anderen Port in `.env` setzen oder blockierenden Prozess beenden |
-| `npm install`-Fehler bei `sqlite3` | Node.js auf aktuelle LTS-Version aktualisieren und `npm install` erneut ausfuehren |
-| Frontend erreicht Backend nicht | Pruefen, ob das Backend laeuft und die API-URL korrekt ist |
-| `start.ps1` laeuft nicht | Execution-Policy setzen: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` |
+| `npm install`-Fehler bei `sqlite3` | Node.js auf aktülle LTS-Version aktualisieren und `npm install` erneut ausführen |
+| Frontend erreicht Backend nicht | Prüfen, ob das Backend läuft und die API-URL korrekt ist |
+| `start.ps1` läuft nicht | Execution-Policy setzen: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` |
 
 ---
 
@@ -128,7 +128,7 @@ FRONTEND_URL=http://localhost:5173
 
 ### System-Architektur
 
-Die Anwendung folgt einem MERN-aehnlichen Stack (mit SQLite statt MongoDB):
+Die Anwendung folgt einem MERN-ähnlichen Stack (mit SQLite statt MongoDB):
 
 ```text
 Frontend (React/Vite)  -->  HTTP/REST  -->  Backend (Express/SQLite)
@@ -213,7 +213,7 @@ food-order-app/
 #### Authentication (`/api/auth`)
 
 ```text
-POST   /api/auth/register      Register neuer Benutzer
+POST   /api/auth/register      Register neür Benutzer
 POST   /api/auth/login         Login (JWT Token)
 GET    /api/auth/profile       Profil abrufen (protected)
 ```
@@ -236,20 +236,20 @@ Beispiel Login-Response:
 ```text
 GET    /api/restaurants            Alle Restaurants abrufen
 GET    /api/restaurants/:id        Restaurant-Details
-GET    /api/restaurants/:id/menu   Menue des Restaurants
-POST   /api/restaurants            Neues Restaurant (protected)
+GET    /api/restaurants/:id/menu   Menü des Restaurants
+POST   /api/restaurants            Neüs Restaurant (protected)
 PUT    /api/restaurants/:id        Restaurant aktualisieren (protected)
-DELETE /api/restaurants/:id        Restaurant loeschen (protected)
+DELETE /api/restaurants/:id        Restaurant löschen (protected)
 ```
 
-#### Menue (`/api/menu`)
+#### Menü (`/api/menu`)
 
 ```text
-GET    /api/menu/:id                          Menue-Item-Details
+GET    /api/menu/:id                          Menü-Item-Details
 GET    /api/menu/restaurant/:restaurantId     Alle Items eines Restaurants
-POST   /api/menu                              Neues Item (protected)
+POST   /api/menu                              Neüs Item (protected)
 PUT    /api/menu/:id                          Item aktualisieren (protected)
-DELETE /api/menu/:id                          Item loeschen (protected)
+DELETE /api/menu/:id                          Item löschen (protected)
 ```
 
 #### Bestellungen (`/api/orders`) (protected)
@@ -257,7 +257,7 @@ DELETE /api/menu/:id                          Item loeschen (protected)
 ```text
 GET    /api/orders               Alle Bestellungen des Benutzers
 GET    /api/orders/:id           Bestellungsdetails
-POST   /api/orders               Neue Bestellung erstellen
+POST   /api/orders               Neü Bestellung erstellen
 PATCH  /api/orders/:id/status    Bestellstatus aktualisieren
 ```
 
@@ -272,7 +272,7 @@ PATCH  /api/orders/:id/status    Bestellstatus aktualisieren
 
 #### Auth-Middleware
 
-Die Datei `backend/src/middleware/auth.middleware.js` validiert JWT-Tokens auf geschuetzten Routen.
+Die Datei `backend/src/middleware/auth.middleware.js` validiert JWT-Tokens auf geschützten Routen.
 
 Beispiel:
 
@@ -286,8 +286,8 @@ Authorization: Bearer <jwt-token>
 | Feature | Beschreibung |
 | --- | --- |
 | Helmet.js | Setzt Security Header wie CSP und X-Frame-Options |
-| CORS | Whitelist fuer erlaubte Frontend-URLs |
-| Rate Limiting | Begrenzung von Login- und API-Requests |
+| CORS | Whitelist für erlaubte Frontend-URLs |
+| Rate Limiting | Begrenzung von Login- und API-Reqüsts |
 | Body Size Limit | JSON Payload-Limit von max. 10 KB |
 | Password Hashing | Passwort-Hashing mit `bcryptjs` |
 
@@ -378,7 +378,7 @@ CREATE TABLE order_items (
 
 - npm
 - nodemon (optional)
-- PowerShell (fuer Startskript)
+- PowerShell (für Startskript)
 
 ## Entwicklungsmodus
 
@@ -420,4 +420,4 @@ npm start
 - [React Dokumentation](https://react.dev/)
 - [Vite Dokumentation](https://vitejs.dev/)
 - [SQLite Dokumentation](https://www.sqlite.org/)
-- [JWT Einfuehrung](https://jwt.io/introduction)
+- [JWT Einführung](https://jwt.io/introduction)

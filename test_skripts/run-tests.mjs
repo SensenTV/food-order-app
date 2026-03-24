@@ -56,16 +56,16 @@ async function test() {
     
     if (res.status === 200 && res.data.token) {
       token = res.data.token;
-      console.log('✓ LOGIN successful');
+      console.log(' LOGIN successful');
       console.log(`  User: ${res.data.user.email}`);
       console.log(`  Token: ${token.substring(0, 30)}...`);
       passCount++;
     } else {
-      console.log(`✗ LOGIN failed - Status: ${res.status}`);
+      console.log(` LOGIN failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ LOGIN error - ${e.message}`);
+    console.log(` LOGIN error - ${e.message}`);
     failCount++;
   }
 
@@ -76,18 +76,18 @@ async function test() {
     const res = await request('GET', '/restaurants');
     
     if (res.status === 200 && Array.isArray(res.data)) {
-      console.log(`✓ GET /restaurants success`);
+      console.log(` GET /restaurants success`);
       console.log(`  Found ${res.data.length} restaurants:`);
       res.data.forEach(r => {
         console.log(`    - ${r.name} (ID: ${r.id})`);
       });
       passCount++;
     } else {
-      console.log(`✗ GET /restaurants failed - Status: ${res.status}`);
+      console.log(` GET /restaurants failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ GET /restaurants error - ${e.message}`);
+    console.log(` GET /restaurants error - ${e.message}`);
     failCount++;
   }
 
@@ -98,20 +98,20 @@ async function test() {
     const res = await request('GET', '/restaurants/1');
     
     if (res.status === 200 && res.data.id) {
-      console.log(`✓ GET /restaurants/1 success`);
+      console.log(` GET /restaurants/1 success`);
       console.log(`  Name: ${res.data.name}`);
       console.log(`  Description: ${res.data.description}`);
       passCount++;
     } else if (res.status === 404) {
-      console.log(`⚠ GET /restaurants/1 - NOT FOUND (404)`);
+      console.log(` GET /restaurants/1 - NOT FOUND (404)`);
       console.log(`  Note: /:id route might not be working`);
       failCount++;
     } else {
-      console.log(`✗ GET /restaurants/1 failed - Status: ${res.status}`);
+      console.log(` GET /restaurants/1 failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ GET /restaurants/1 error - ${e.message}`);
+    console.log(` GET /restaurants/1 error - ${e.message}`);
     failCount++;
   }
 
@@ -122,18 +122,18 @@ async function test() {
     const res = await request('GET', '/restaurants/1/menu');
     
     if (res.status === 200 && Array.isArray(res.data)) {
-      console.log(`✓ GET /restaurants/1/menu success`);
+      console.log(` GET /restaurants/1/menu success`);
       console.log(`  Found ${res.data.length} items:`);
       res.data.forEach(item => {
         console.log(`    - ${item.name} ($${item.price})`);
       });
       passCount++;
     } else {
-      console.log(`✗ GET /restaurants/1/menu failed - Status: ${res.status}`);
+      console.log(` GET /restaurants/1/menu failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ GET /restaurants/1/menu error - ${e.message}`);
+    console.log(` GET /restaurants/1/menu error - ${e.message}`);
     failCount++;
   }
 
@@ -149,24 +149,24 @@ async function test() {
     });
     
     if (res.status === 201 && res.data.restaurant) {
-      console.log(`✓ POST /restaurants success`);
+      console.log(` POST /restaurants success`);
       console.log(`  Created ID: ${res.data.restaurant.id}`);
       console.log(`  Name: ${res.data.restaurant.name}`);
       passCount++;
     } else if (res.status === 404) {
-      console.log(`⚠ POST /restaurants - NOT FOUND (404)`);
+      console.log(` POST /restaurants - NOT FOUND (404)`);
       console.log(`  Note: Routes might not be properly registered`);
       failCount++;
     } else if (res.status === 401 || res.status === 403) {
-      console.log(`✗ POST /restaurants - Auth failed (${res.status})`);
+      console.log(` POST /restaurants - Auth failed (${res.status})`);
       failCount++;
     } else {
-      console.log(`✗ POST /restaurants failed - Status: ${res.status}`);
+      console.log(` POST /restaurants failed - Status: ${res.status}`);
       console.log(`  Response: ${JSON.stringify(res.data)}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ POST /restaurants error - ${e.message}`);
+    console.log(` POST /restaurants error - ${e.message}`);
     failCount++;
   }
 
@@ -181,16 +181,16 @@ async function test() {
     });
     
     if (res.status === 201 && res.data.user) {
-      console.log(`✓ POST /auth/register success`);
+      console.log(` POST /auth/register success`);
       console.log(`  User ID: ${res.data.user.id}`);
       console.log(`  Email: ${res.data.user.email}`);
       passCount++;
     } else {
-      console.log(`✗ POST /auth/register failed - Status: ${res.status}`);
+      console.log(` POST /auth/register failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ POST /auth/register error - ${e.message}`);
+    console.log(` POST /auth/register error - ${e.message}`);
     failCount++;
   }
 
@@ -203,16 +203,16 @@ async function test() {
     });
     
     if (res.status === 200 && res.data.user) {
-      console.log(`✓ GET /auth/profile success`);
+      console.log(` GET /auth/profile success`);
       console.log(`  Name: ${res.data.user.name}`);
       console.log(`  Email: ${res.data.user.email}`);
       passCount++;
     } else {
-      console.log(`✗ GET /auth/profile failed - Status: ${res.status}`);
+      console.log(` GET /auth/profile failed - Status: ${res.status}`);
       failCount++;
     }
   } catch (e) {
-    console.log(`✗ GET /auth/profile error - ${e.message}`);
+    console.log(` GET /auth/profile error - ${e.message}`);
     failCount++;
   }
 
@@ -220,14 +220,14 @@ async function test() {
   console.log('\n╔════════════════════════════════════════╗');
   console.log('║           TEST SUMMARY                 ║');
   console.log('╚════════════════════════════════════════╝');
-  console.log(`✓ Passed: ${passCount}`);
-  console.log(`✗ Failed: ${failCount}`);
+  console.log(` Passed: ${passCount}`);
+  console.log(` Failed: ${failCount}`);
   console.log(`Total:   ${passCount + failCount}\n`);
 
   if (failCount === 0) {
-    console.log('🎉 All tests passed!\n');
+    console.log(' All tests passed!\n');
   } else {
-    console.log('⚠️ Some tests failed - check implementation\n');
+    console.log(' Some tests failed - check implementation\n');
   }
 
   process.exit(failCount === 0 ? 0 : 1);

@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const API_URL = 'http://localhost:5000/api';
 
-console.log('🔒 SECURITY TEST - XSS & INJECTION PROTECTION\n');
+console.log(' SECURITY TEST - XSS & INJECTION PROTECTION\n');
 console.log('='.repeat(50));
 
 // Test payloads
@@ -25,7 +25,7 @@ let results = {
 };
 
 async function testRegistration() {
-  console.log('\n📝 Test 1: Registration XSS Protection');
+  console.log('\n Test 1: Registration XSS Protection');
   console.log('-'.repeat(50));
 
   for (const [name, payload] of Object.entries(xssPayloads)) {
@@ -42,26 +42,26 @@ async function testRegistration() {
 
       const data = await response.json();
       
-      // Wenn der Name/Error echoed wird, könnte XSS möglich sein
+      // Wenn Name/Error zurückgegeben wird, könnte XSS möglich sein
       if (data.message && data.message.includes('<')) {
-        console.log(`  ❌ ${name}: Payload echoed in response`);
+        console.log(` ${name}: Payload echoed in response`);
         results.failed++;
       } else if (response.status === 400) {
-        console.log(`  ✅ ${name}: Rejected by validation`);
+        console.log(` ${name}: Rejected by validation`);
         results.passed++;
       } else {
-        console.log(`  ⚠️  ${name}: Created (user data not validated)`);
+        console.log(` ${name}: Created (user data not validated)`);
         results.warnings++;
       }
     } catch (err) {
-      console.log(`  ❌ ${name}: ${err.message}`);
+      console.log(` ${name}: ${err.message}`);
       results.failed++;
     }
   }
 }
 
 async function testLogin() {
-  console.log('\n🔐 Test 2: Login Protection');
+  console.log('\n Test 2: Login Protection');
   console.log('-'.repeat(50));
 
   // Erst einen echten User erstellen
@@ -97,24 +97,24 @@ async function testLogin() {
       });
 
       if (response.status === 401 || response.status === 400) {
-        console.log(`  ✅ XSS/SQL payload rejected: ${response.status}`);
+        console.log(`  XSS/SQL payload rejected: ${response.status}`);
         results.passed++;
       } else {
         console.log(`  ❌ Suspicious status: ${response.status}`);
         results.failed++;
       }
     } catch (err) {
-      console.log(`  ✅ Request failed (safe): ${err.message.slice(0, 40)}`);
+      console.log(`   Request failed (safe): ${err.message.slice(0, 40)}`);
       results.passed++;
     }
   }
 }
 
 async function testOrderCreation() {
-  console.log('\n🛒 Test 3: Order Data Sanitization');
+  console.log('\n Test 3: Order Data Sanitization');
   console.log('-'.repeat(50));
 
-  // Zuerst einloggen
+  // Als Erstes einloggen
   let token = '';
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -128,12 +128,12 @@ async function testOrderCreation() {
     const data = await response.json();
     token = data.token;
   } catch (e) {
-    console.log(`  ⚠️  Could not authenticate`);
+    console.log(`   Could not authenticate`);
     return;
   }
 
   if (!token) {
-    console.log(`  ⚠️  No token available`);
+    console.log(`No token available`);
     return;
   }
 
@@ -161,22 +161,22 @@ async function testOrderCreation() {
     
     // Überprüfen, ob die Eingabedaten sanitiert werden
     if (data.items && JSON.stringify(data.items).includes('<img')) {
-      console.log(`  ❌ XSS payload stored in database!`);
+      console.log(`XSS payload stored in database!`);
       results.failed++;
     } else if (response.status === 400 || response.status === 500) {
-      console.log(`  ✅ Invalid data rejected`);
+      console.log(`Invalid data rejected`);
       results.passed++;
     } else {
-      console.log(`  ⚠️  Order creation needs validation review`);
+      console.log(`Order creation needs validation review`);
       results.warnings++;
     }
   } catch (err) {
-    console.log(`  ⚠️  Error: ${err.message.slice(0, 40)}`);
+    console.log(`Error: ${err.message.slice(0, 40)}`);
   }
 }
 
 async function checkSecurityHeaders() {
-  console.log('\n🛡️  Test 4: Security Headers');
+  console.log('\n Test 4: Security Headers');
   console.log('-'.repeat(50));
 
   try {
@@ -194,21 +194,21 @@ async function checkSecurityHeaders() {
     let found = 0;
     for (const header of securityHeaders) {
       if (headers.get(header)) {
-        console.log(`  ✅ ${header}: ${headers.get(header)}`);
+        console.log(`${header}: ${headers.get(header)}`);
         found++;
       }
     }
 
     if (found === 0) {
-      console.log(`  ⚠️  No security headers found`);
+      console.log(` No security headers found`);
       console.log(`     Consider adding CSP, X-Frame-Options, etc.`);
       results.warnings++;
     } else if (found < 3) {
-      console.log(`  ⚠️  Only ${found}/5 security headers present`);
+      console.log(` Only ${found}/5 security headers present`);
       results.warnings++;
     }
   } catch (err) {
-    console.log(`  ❌ Could not check headers: ${err.message}`);
+    console.log(` Could not check headers: ${err.message}`);
     results.failed++;
   }
 }
@@ -222,19 +222,19 @@ async function runTests() {
     await checkSecurityHeaders();
 
     console.log('\n' + '='.repeat(50));
-    console.log('📊 TEST RESULTS');
+    console.log(' TEST RESULTS');
     console.log('='.repeat(50));
-    console.log(`  ✅ Passed: ${results.passed}`);
-    console.log(`  ❌ Failed: ${results.failed}`);
-    console.log(`  ⚠️  Warnings: ${results.warnings}`);
+    console.log(`  Passed: ${results.passed}`);
+    console.log(`  Failed: ${results.failed}`);
+    console.log(`  Warnings: ${results.warnings}`);
 
     if (results.failed === 0) {
       console.log('\n🎉 Basic security checks passed!');
     } else {
-      console.log('\n⚠️  Security issues found - review above');
+      console.log('\n  Security issues found - review above');
     }
 
-    console.log('\n📝 RECOMMENDATIONS:');
+    console.log('\n RECOMMENDATIONS:');
     console.log('  1. Add Content-Security-Policy header');
     console.log('  2. Add X-Content-Type-Options: nosniff');
     console.log('  3. Add X-Frame-Options: DENY');
