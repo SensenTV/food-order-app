@@ -39,10 +39,14 @@ export default function Restaurants() {
         <div className="header-right">
           <CartBadge />
           {user && (
-            <div className="user-info">
-              <span>Welcome, {user.name}!</span>
-              <button onClick={handleLogout} className="logout-btn">Logout</button>
-            </div>
+            <>
+              <div className="user-info">
+                <span>Welcome, {user.name}!</span>
+              </div>
+              <div className="user-logout">
+                <button onClick={handleLogout} className="logout-btn">Logout</button>
+              </div>
+            </>
           )}
           {!user && (
             <div className="auth-links">

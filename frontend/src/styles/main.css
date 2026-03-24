@@ -42,7 +42,14 @@ body {
   font-weight: 500;
 }
 
+.user-logout {
+  display: flex;
+  align-items: center;
+}
+
 .logout-btn {
+  width: auto;
+  margin-bottom: 0;
   padding: 8px 15px;
   background-color: #e74c3c;
   color: white;
@@ -50,6 +57,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  line-height: 1.2;
   transition: background-color 0.3s;
 }
 
@@ -244,7 +252,16 @@ button:disabled {
 
 .restaurant-card:hover {
   transform: translateY(-5px);
+  background-color: #95a5a6;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.restaurant-card:hover p {
+  color: #000000;
+}
+
+.restaurant-card:hover h3 {
+  color: #000000;
 }
 
 .restaurant-card h3 {
