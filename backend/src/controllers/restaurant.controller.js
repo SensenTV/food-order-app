@@ -35,8 +35,8 @@ export const getRestaurantById = async (req, res) => {
 
 export const getMenuByRestaurant = async (req, res) => {
   try {
-    const { id } = req.params;
-    const menu = await getRestaurantMenu(id);
+    const { restaurantId } = req.params;
+    const menu = await getRestaurantMenu(restaurantId);
     
     if (!menu || menu.length === 0) {
       return res.status(404).json({ message: 'Menu not found for this restaurant' });

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getRestaurants } from '../api/api';
-import CartBadge from '../components/CartBadge';
+import CartBadge from '../components/CartBadge.jsx';
 import '../styles/main.css';
 
 export default function Restaurants() {

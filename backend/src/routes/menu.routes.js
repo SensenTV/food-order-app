@@ -10,7 +10,7 @@ import { authenticateToken } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-// Public routes
+// Public routes - more specific routes FIRST
 router.get('/restaurant/:restaurantId', getMenuByRestaurant);
 router.get('/:id', getMenuItemById);
 

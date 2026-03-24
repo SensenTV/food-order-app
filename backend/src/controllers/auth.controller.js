@@ -3,14 +3,21 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET, JWT_EXPIRES_IN } from '../config/jwt.js';
 import { getUserByEmail, createUser, getUserById } from '../models/user.model.js';
 
-// Validation helper
+// Validation helpers with length limits to prevent DoS
 const validateEmail = (email) => {
+  if (!email || email.length > 255) {
+    return false;
+  }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
 const validatePassword = (password) => {
-  return password && password.length >= 6;
+  return password && password.length >= 6 && password.length <= 128;
+};
+
+const validateName = (name) => {
+  return name && name.length > 0 && name.length <= 100;
 };
 
 export const registerUser = async (req, res) => {
@@ -27,7 +34,11 @@ export const registerUser = async (req, res) => {
     }
 
     if (!validatePassword(password)) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+      return res.status(400).json({ message: 'Password must be at least 6 characters and max 128 characters' });
+    }
+
+    if (!validateName(name)) {
+      return res.status(400).json({ message: 'Name is required and cannot be more than 100 characters' });
     }
 
     // Check if user already exists

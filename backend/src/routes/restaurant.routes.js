@@ -11,9 +11,9 @@ import { authenticateToken } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-// Public routes - specific routes before param routes
+// Public routes - more specific routes FIRST, then param routes
 router.get('/', getRestaurants);
-router.get('/:id/menu', getMenuByRestaurant);
+router.get('/:restaurantId/menu', getMenuByRestaurant);
 router.get('/:id', getRestaurantById);
 
 // Protected routes (for admins)

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order App - Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { 
+            padding: 10px 20px; 
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #2980b9; }
+        pre { 
+            background-color: #f8f9fa; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Food Order App - Debug Panel</h1>
+        
+        <div id="status"></div>
+        
+        <h2>Tests</h2>
+        <button onclick="testBackend()">Test Backend API</button>
+        <button onclick="testFrontend()">Test Frontend Setup</button>
+        <button onclick="testRedux()">Test Redux Store</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        
+        <h2>Logs</h2>
+        <pre id="logs"></pre>
+    </div>
+
+    <script>
+        const logsEl = document.getElementById('logs');
+        const statusEl = document.getElementById('status');
+
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logsEl.textContent += `[${timestamp}] ${message}\n`;
+            logsEl.scrollTop = logsEl.scrollHeight;
+        }
+
+        function setStatus(message, type = 'info') {
+            statusEl.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        async function testBackend() {
+            log('🔄 Testing Backend...');
+            try {
+                const response = await fetch('http://localhost:5000/api/restaurants');
+                log(`Backend Response Status: ${response.status}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Backend is running! Got ${data.length} restaurants`);
+                    setStatus('✅ Backend API is working!', 'success');
+                } else {
+                    log(`❌ Backend returned status ${response.status}`);
+                    setStatus('❌ Backend error', 'error');
+                }
+            } catch (error) {
+                log(`❌ Backend Error: ${error.message}`);
+                setStatus('❌ Cannot connect to backend. Make sure it\'s running on http://localhost:5000', 'error');
+            }
+        }
+
+        function testFrontend() {
+            log('🔄 Testing Frontend Setup...');
+            
+            // Check if React is loaded
+            if (window.React) {
+                log('✅ React is loaded');
+            } else {
+                log('❌ React is NOT loaded');
+            }
+
+            // Check if Redux Store exists
+            try {
+                log('Frontend scripts are being loaded...');
+                setStatus('ℹ️ Check browser console (F12) for more details', 'info');
+            } catch (error) {
+                log(`Error: ${error.message}`);
+            }
+        }
+
+        function testRedux() {
+            log('🔄 Testing Redux Store...');
+            try {
+                // This will only work if Redux is properly initialized
+                log('Redux initialization depends on React rendering');
+                setStatus('ℹ️ Redux status will be available once React app mounts', 'info');
+            } catch (error) {
+                log(`Error: ${error.message}`);
+            }
+        }
+
+        function clearLogs() {
+            logsEl.textContent = '';
+            statusEl.innerHTML = '';
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('Debug panel loaded');
+            log('Try clicking the buttons to test different parts');
+            log('');
+            testBackend();
+        });
+    </script>
+</body>
+</html>
