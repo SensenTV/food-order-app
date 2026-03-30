@@ -5,17 +5,17 @@ const API_BASE_URL = 'http://localhost:5000/api';
 async function test(label, fn) {
   try {
     await fn();
-    console.log(`✅ ${label}`);
+    console.log(` ${label}`);
     return true;
   } catch (error) {
-    console.error(`❌ ${label}`);
+    console.error(` ${label}`);
     console.error(`   Error: ${error.message}`);
     return false;
   }
 }
 
 async function runTests() {
-  console.log('\n🚀 Starting E2E Tests for Food Order App\n');
+  console.log('\n Starting E2E Tests for Food Order App\n');
   
   let passed = 0;
   let failed = 0;
@@ -178,39 +178,18 @@ async function runTests() {
     if (!data.id) throw new Error('No order data');
   })) passed++; else failed++;
 
-  // 11. Test Create Menu Item (Protected)
-  if (await test('11. Create Menu Item (Admin Route)', async () => {
-    const response = await fetch(`${API_BASE_URL}/menu`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        name: 'Test Item',
-        description: 'A test menu item',
-        price: 9.99,
-        restaurant_id: restaurantId
-      })
-    });
-    
-    if (!response.ok) throw new Error(`Status ${response.status}`);
-    const data = await response.json();
-    if (!data.id) throw new Error('No item created');
-  })) passed++; else failed++;
-
   // Summary
   console.log('\n' + '='.repeat(50));
-  console.log(`✅ Passed: ${passed}`);
-  console.log(`❌ Failed: ${failed}`);
+  console.log(` Passed: ${passed}`);
+  console.log(` Failed: ${failed}`);
   console.log(`Total: ${passed + failed}`);
   console.log('='.repeat(50) + '\n');
 
   if (failed === 0) {
-    console.log('🎉 All tests passed! E2E flow is working correctly.\n');
+    console.log(' All tests passed! E2E flow is working correctly.\n');
     process.exit(0);
   } else {
-    console.log('⚠️  Some tests failed. Please check the errors above.\n');
+    console.log('  Some tests failed. Please check the errors above.\n');
     process.exit(1);
   }
 }

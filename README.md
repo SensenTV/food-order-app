@@ -293,6 +293,15 @@ Authorization: Bearer <jwt-token>
 
 ### Datenbank (SQLite)
 
+#### Anlegen neuer Restaurants/Menüpunkte
+
+Zum Anlegen neuer Restaurants oder Menüpunkte müssen die entsprechenden Informationen in der Datei `backend/seed.js` an der vorgesehenen Stelle ergänzt werden. Anschließend kann der Seed-Vorgang mit dem folgenden Befehl ausgeführt werden:
+
+```Bash
+cd ./backend
+node ./seed.js
+```
+
 #### Tabellen-Schema
 
 ```sql
