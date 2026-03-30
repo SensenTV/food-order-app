@@ -2,6 +2,7 @@
 # Startet Frontend und Backend, oder restartet sie falls sie laufen
 
 $appRoot = Get-Location
+$backendPath = Join-Path $appRoot "backend"
 
 Write-Host ""
 Write-Host "======================================"
@@ -12,7 +13,7 @@ Write-Host "App Root: $appRoot" -ForegroundColor Cyan
 Write-Host ""
 
 # Step 1: Kill old processes
-Write-Host "[1/4] Checking for running Node processes..." -ForegroundColor Yellow
+Write-Host "[1/5] Checking for running Node processes..." -ForegroundColor Yellow
 $nodeProcesses = Get-Process node -ErrorAction SilentlyContinue
 
 if ($nodeProcesses.Count -gt 0) {
@@ -26,14 +27,36 @@ if ($nodeProcesses.Count -gt 0) {
     Write-Host ""
 }
 
-# Step 2: Start Backend
-Write-Host "[2/4] Starting Backend Server..." -ForegroundColor Yellow
-$backendPath = Join-Path $appRoot "backend"
+# Step 2: Run Backend Seed
+Write-Host "[2/5] Running Backend Seed..." -ForegroundColor Yellow
 
 if (-Not (Test-Path $backendPath)) {
     Write-Host "  [ERROR] Backend path not found: $backendPath" -ForegroundColor Red
     exit 1
 }
+
+$seedPathSrc = Join-Path $backendPath "src\seed.js"
+$seedPathRoot = Join-Path $backendPath "seed.js"
+
+if (Test-Path $seedPathSrc) {
+    & node $seedPathSrc
+} elseif (Test-Path $seedPathRoot) {
+    & node $seedPathRoot
+} else {
+    Write-Host "  [ERROR] seed.js not found (checked src\seed.js and seed.js)" -ForegroundColor Red
+    exit 1
+}
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  [ERROR] Seed failed with exit code $LASTEXITCODE" -ForegroundColor Red
+    exit 1
+} else {
+    Write-Host "  [OK] Seed executed successfully" -ForegroundColor Green
+    Write-Host ""
+}
+
+# Step 3: Start Backend
+Write-Host "[3/5] Starting Backend Server..." -ForegroundColor Yellow
 
 $backendProcess = Start-Process -NoNewWindow -FilePath "node" -ArgumentList "src/server.js" -WorkingDirectory $backendPath -PassThru
 
@@ -48,8 +71,8 @@ if ($backendProcess) {
 
 Start-Sleep -Seconds 3
 
-# Step 3: Start Frontend
-Write-Host "[3/4] Starting Frontend Server..." -ForegroundColor Yellow
+# Step 4: Start Frontend
+Write-Host "[4/5] Starting Frontend Server..." -ForegroundColor Yellow
 $frontendPath = Join-Path $appRoot "frontend"
 
 if (-Not (Test-Path $frontendPath)) {
@@ -68,8 +91,8 @@ if ($frontendProcess) {
     exit 1
 }
 
-# Step 4: Status
-Write-Host "[4/4] All servers running" -ForegroundColor Green
+# Step 5: Status
+Write-Host "[5/5] All servers running" -ForegroundColor Green
 Write-Host ""
 Write-Host "======================================"
 Write-Host "  SERVERS RUNNING"
