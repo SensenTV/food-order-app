@@ -115,6 +115,7 @@ const seedDatabase = async () => {
     console.log('✓ Database seeded successfully');
   } catch (error) {
     console.error('Seed error:', error);
+    process.exitCode = 1;
   }
 };
 

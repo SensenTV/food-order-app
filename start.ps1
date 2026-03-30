@@ -38,13 +38,18 @@ if (-Not (Test-Path $backendPath)) {
 $seedPathSrc = Join-Path $backendPath "src\seed.js"
 $seedPathRoot = Join-Path $backendPath "seed.js"
 
-if (Test-Path $seedPathSrc) {
-    & node $seedPathSrc
-} elseif (Test-Path $seedPathRoot) {
-    & node $seedPathRoot
-} else {
-    Write-Host "  [ERROR] seed.js not found (checked src\seed.js and seed.js)" -ForegroundColor Red
-    exit 1
+Push-Location $backendPath
+try {
+    if (Test-Path "src\seed.js") {
+        & node "src\seed.js"
+    } elseif (Test-Path "seed.js") {
+        & node "seed.js"
+    } else {
+        Write-Host "  [ERROR] seed.js not found (checked src\seed.js and seed.js)" -ForegroundColor Red
+        exit 1
+    }
+} finally {
+    Pop-Location
 }
 
 if ($LASTEXITCODE -ne 0) {
